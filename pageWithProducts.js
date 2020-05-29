@@ -149,26 +149,19 @@ function clearCart() {
 function checkout() {
   let waFormHTML = `
     <form id="wa-form" action="https://api.whatsapp.com/send?">
+    <input type="hidden" name="phone" value="6281220701139">
   `;
 
-  cart.forEach((cartItem, index) => {
-    ++index;
+  // cart.forEach((cartItem, index) => {
+  //   ++index;
 
-    var
-    text = `Pesanan : ${cartItem.name}\nHarga :  ${cartItem.price}\nJumlah : ${cartItem.quantity}\nHarga Total : ${parseInt(cartItem.price)*parseInt(cartItem.quantity)}\n===================================\n`;
-    waFormHTML += ` 
-      <input type="hidden" name="phone" value="6289677657045">
-      <input type="hidden" name="text" value="${text}">
-    `;
-
-    /*waFormHTML += ` 
-      <input type="hidden" name="phone" value="6289677657045">
-      <input type="hidden" name="text&26item_name_${index}" value="${cartItem.name}">
-      <input type="hidden" name="phone=" value="=089677657045">
-      <input type="hidden" name="amount_${index}" value="${cartItem.price}">
-      <input type="hidden" name="quantity_${index}" value="${cartItem.quantity}">
-    `;*/
-  });
+  //   var
+  //   text = `Pesanan : ${cartItem.name}\nHarga :  ${cartItem.price}\nJumlah : ${cartItem.quantity}\nHarga Total : ${parseInt(cartItem.price)*parseInt(cartItem.quantity)}\n===================================\n`;
+  //   waFormHTML += ` 
+  //     <input type="hidden" name="phone" value="6289677657045">
+  //     <input type="hidden" name="text" value="${text}">
+  //   `;
+  // });
 
   waFormHTML += `
       <input type="submit" value="wa">
@@ -177,6 +170,18 @@ function checkout() {
   `;
 
   document.querySelector('body').insertAdjacentHTML('beforeend', waFormHTML);
+
+  var target = document.querySelector("#wa-form");
+  var template = `<input type="hidden" name="text" value="~id~">`;
+  
+  var ab = ""
+  cart.forEach(function(item) {
+    console.log(item)
+    ab += `Pesanan      : ${item.name}\nHarga         :  ${item.price}\nJumlah        : ${item.quantity}\nHarga Total : ${parseInt(item.price)*parseInt(item.quantity)}\n\n`
+    
+  });
+  target.insertAdjacentHTML("beforeend", template.replace(/~id~/g, ab));
+console.log(ab)
   document.getElementById('wa-form').submit();
 }
 
